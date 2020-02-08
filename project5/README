@@ -1,0 +1,21 @@
+A system image is a serialized copy of the entire state of a computer system
+stored in some non-volatile form such as a file. 
+
+The file system must have a plan for where it stores inodes and content blocks
+on the disk. To do so, xv6 divides the disk into several sections. 
+
+Superblock: contains the metadata about the file system (the file system size
+in blocks, the number of data blocks, the number of inodes, and the number of
+blocks in the log).
+
+All of the on-disk inodes are packed into a contiguous area of disk called the
+inode blocks. Every inode is the same size, so it is easy, given a number n,
+to find the nth inode on the disk. In fact, this number n, called the inode
+number or i-number, is how inodes are identified in the implementation.
+
+The on-disk inode is defined by a struct dinode. THe type field distinguishes
+between files, directories, and special files (devices). A type of zero
+indicates that an on-disk inode is free. The nlink field counts the number of
+directory entires that refer to this inode. The size field records the number
+of bytes of content in the file. The addrs array records the block number of
+disk blocks holding the file's content.
